@@ -17,6 +17,8 @@ OUTFILE1 = OUTDIR+"output1_sent_received.csv"
 OUTFILE2 = OUTDIR+"output2_prolific_senders.png"
 OUTFILE3 = OUTDIR+"output3_percentage_people_count.png"
 
+if  os.path.isdir(OUTDIR)==False:
+    os.mkdir(OUTDIR)
 
 #0 Read required columns into DataFrame 
 #with open('enron-event-history-all.csv') as csvFile:
