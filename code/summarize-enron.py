@@ -8,8 +8,15 @@ import pandas as pd
 import csv
 import math
 import sys
+import os
 
 file_name = sys.argv[1]
+
+OUTDIR = "../output/"
+OUTFILE1 = OUTDIR+"output1_sent_received.csv"
+OUTFILE2 = OUTDIR+"output2_prolific_senders.png"
+OUTFILE3 = OUTDIR+"output3_percentage_people_count.png"
+
 
 #0 Read required columns into DataFrame 
 #with open('enron-event-history-all.csv') as csvFile:
@@ -50,7 +57,7 @@ dfRecipient.rename(columns={"time":"cntRecipient"}, inplace=True)
 dfMerged = pd.concat([dfSender, dfRecipient], axis=1, sort=True)
 dfMerged.fillna(value={'cntSender': 0, 'cntRecipient': 0}, inplace=True)
 dfMerged.sort_values(by=['cntSender','cntRecipient'], ascending=False, inplace=True, na_position='last')
-dfMerged.to_csv('output1_sent_received.csv')
+dfMerged.to_csv(OUTFILE1)
 
 top = 5
 dfHead = dfMerged.head(top)
@@ -89,7 +96,7 @@ plt.grid(True)
 plt.xlabel("Month in Unix Time")
 plt.ylabel("Email Count")
 plt.legend(loc=2, borderaxespad=0.,frameon=False)
-plt.savefig('output2_prolific_senders.png', format='png',dpi=200)
+plt.savefig(OUTFILE2, format='png',dpi=200)
 
 
 #3 Performed DataFrame group by Recipient & Month for top 5 Prolific Senders, Then preparied data for plot
@@ -111,9 +118,10 @@ for sender in mList:
     plt.plot(x,y,label = sender[0])
     
 # Legend
+os.remove('monthly_count.csv')
 plt.title('Count of unique people contacted by prolific senders')
 plt.grid(True)
 plt.xlabel("Month in Unix Time")
 plt.ylabel("Percentage People Count")
 plt.legend(loc=2, borderaxespad=0.,frameon=False)
-plt.savefig('output3_percentage_people_count.png', format='png',dpi=200)
+plt.savefig(OUTFILE3, format='png',dpi=200)
